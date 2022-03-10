@@ -1,21 +1,32 @@
-import React, { useContext } from "react";
-import { View, StyleSheet, Text, FlatList, Button,TouchableOpacity} from "react-native";
-import { Context } from "../context/BlogContext";
-import { Feather } from "@expo/vector-icons";
+import React, { useContext } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Button,
+  TouchableOpacity,
+} from 'react-native';
+import { Context } from '../context/BlogContext';
+import { Feather } from '@expo/vector-icons';
 
-const IndexScreen = ({navigation}) => {
-  const { state, addBlogPost, deleteBlogPost } = useContext(Context);
+const IndexScreen = ({ navigation }) => {
+  const { state, deleteBlogPost } = useContext(Context);
+
   return (
     <View>
-      <Button title="addBlogPost" onPress={addBlogPost} />
       <FlatList
         data={state}
-        keyExtrator={(blogPost) => blogPost.title}
+        keyExtractor={(blogPost) => blogPost.title}
         renderItem={({ item }) => {
           return (
-            <TouchableOpacity onPress={()=> navigation.navigate('Show', { id:item.id }) }>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Show', { id: item.id })}
+            >
               <View style={styles.row}>
-                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.title}>
+                  {item.title} - {item.id}
+                </Text>
                 <TouchableOpacity onPress={() => deleteBlogPost(item.id)}>
                   <Feather style={styles.icon} name="trash" />
                 </TouchableOpacity>
@@ -28,36 +39,31 @@ const IndexScreen = ({navigation}) => {
   );
 };
 
-IndexScreen.navigationOptions = ({navigation}) => {
-
+IndexScreen.navigationOptions = ({ navigation }) => {
   return {
-    headerRight: (
-      <TouchableOpacity onPress={()=> navigation.navigate('Create')}>
-        
+    headerRight: () => (
+      <TouchableOpacity onPress={() => navigation.navigate('Create')}>
         <Feather name="plus" size={30} />
       </TouchableOpacity>
     ),
   };
-
-
-}
+};
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingVertical: 20,
-    borderBottomWidth: 1,
+    paddingHorizontal: 10,
+    borderTopWidth: 1,
     borderColor: 'gray',
-    marginVertical: 10
   },
   title: {
     fontSize: 18,
-    marginHorizontal:6
-  
   },
   icon: {
-    fontSize: 22,
+    fontSize: 24,
   },
 });
+
 export default IndexScreen;
